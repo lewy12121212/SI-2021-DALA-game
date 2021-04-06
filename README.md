@@ -6,7 +6,16 @@ Projekt zakłada implementację gry DALA, oraz algorytmu grającego wzorowanego 
 * Funkcje/metody - z dużej litery, słowa łączone przy pomocy podkreślnika
 * Klasy - z dużej litery, słowa łączone dużą literą
 
-### Przykład:
+##### Przykład:
 * Zmienne -> zmienna_a, zmienna_b
 * Funkcje/metody -> Funckcja_a, Funkcja_b, Metoda_A, Metoda_B
 * Klasy -> KlasaA, KlasaB
+
+### Zasady tworzenia plików i katalogów:
+##### Foldery
+* z małej litery
+* łączenie wyrazów przy pomocy podkreślnika
+
+##### Pliki
+* z dużej litery
+* łączenie wyrazów przy pomocy dużej litery
