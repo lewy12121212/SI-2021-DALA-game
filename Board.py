@@ -14,17 +14,26 @@ class Board:
                 print(y,end = " ")
             print()
         
+    #Sprawdza czy którekolwiek z czterech środkowych pól planszy jest puste, jeśli tak zwraca fałsz, w przeciwnym wypadku zwraca prawdę
+    def Four_field(self):
+        if(self.board[2][2]==0 or self.board[2][3]==0 or self.board[3][2]==0 or self.board[3][3]==0):
+            return False
+        else: 
+            return True
+
     #1 - gracz 1
     #2 - gracz 2
 
     #Wstawia pionek na podane pole (x i y = od 0 do 5), jako dany gracz (1/2)
     def Put_pawn(self,x,y,player):
-        self.board[x][y]=player
+        #Sprawdza czy zostały najpierw zajęte cztery środkowe pola oraz czy typowane pole jest puste
+        if(self.Four_field()==True and self.board[x][y]==0):
+            self.board[x][y]=player
+        #Sprawdza czy gracz chce zajęć któreś z czterech środkowych pól oraz czy typowane pole jest puste
+        elif (((x==2 and (y==2 or y==3)) or (x==3 and (y==2 or y==3)))and self.board[x][y]==0):
+            self.board[x][y]=player
+        else:    
+            print("You can't put your pawn here")
 
 
-a = Board() 
-a.Printing_board()
-a.Put_pawn(1,1,1) 
-a.Printing_board() 
-a.Put_pawn(3,2,2)
-a.Printing_board()
+
