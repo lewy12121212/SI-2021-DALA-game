@@ -1,14 +1,22 @@
+import Player
 class Board:
     board=[]
-
+    turn = 1
+    player1 = Player
+    player2 = Player
+    players=[]
     #Konstruktor tworzący planszę 6x6 wypełnioną zerami
     def __init__(self):
         self.board = [[0 for j in range(6)] for i in range(6)]
-        #print(board)
+        self.turn = 1
+        self.player1 = Player.Player(1)
+        self.player2 = Player.Player(2)
+        self.players = [self.player1,self.player2]
 
     #Wypisuje planszę
     def Printing_board(self):
         print("")
+        print("It's turn Player nr", self.turn)
         for x in self.board:
             for y in x:
                 print(y,end = " ")
@@ -20,6 +28,11 @@ class Board:
             return False
         else: 
             return True
+    #Podaje ilość pionków postawionych przez gracza na planszy
+    def get_players_placed_pawns(self,id):
+        return self.players[id-1].placed_pawns
+
+       
 
     #1 - gracz 1
     #2 - gracz 2
@@ -29,9 +42,23 @@ class Board:
         #Sprawdza czy zostały najpierw zajęte cztery środkowe pola oraz czy typowane pole jest puste
         if(self.Four_field()==True and self.board[x][y]==0):
             self.board[x][y]=player
+            self.players[self.turn-1].placed_pawns+=1
+            self.players[self.turn-1].pawns_on_board+=1
+            #Zmienia kolejkę gracza
+            if(self.turn==1):
+                self.turn = 2
+            else: 
+                self.turn = 1
         #Sprawdza czy gracz chce zajęć któreś z czterech środkowych pól oraz czy typowane pole jest puste
         elif (((x==2 and (y==2 or y==3)) or (x==3 and (y==2 or y==3)))and self.board[x][y]==0):
             self.board[x][y]=player
+            self.players[self.turn-1].placed_pawns+=1
+            self.players[self.turn-1].pawns_on_board+=1
+            #Zmienia kolejkę gracza
+            if(self.turn==1):
+                self.turn = 2
+            else: 
+                self.turn = 1
         else:    
             print("You can't put your pawn here")
 
