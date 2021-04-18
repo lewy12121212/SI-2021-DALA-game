@@ -14,5 +14,5 @@ class Player:
         self.player_id = id
 
     #Zwraca id gracza
-    def id(self):
+    def Id(self):
         return self.player_id
