@@ -18,28 +18,38 @@ SIDE_SIZE = 50 #długość boku pola
 
 class Gui:
     def __init__(self, board):
+        #inicjowanie biblioteki pyGame
         pygame.init()
+        #inicjowanie zmiennych pomocniczych
+        self.If_three = False
+
+        #inijowanie tablicy
         self.board = board
         self.board.Printing_board()
         # definiowanie okna gry
         self.win = pygame.display.set_mode((425, 425))
         # wyświetlanie okna gry
         pygame.display.set_caption("Moja Gra")
+        #tworzenie tablicy pozycji
         self.Create_table_of_position()
+        #uruchomienie głównej funckcji GUI
         self.Window_while(True)
 
     def Window_while(self, run):
        
-        while run: # pętla główna okna gry
+        #pętla główna okna gry
+        while run: 
             self.Draw_board()
             self.Pawn_draw()
-            for event in pygame.event.get(): # obsługa zdarzeń
+
+            #obsługa zdarzeń
+            for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
                 elif event.type == pygame.MOUSEBUTTONUP:
-                    self.Pawn_set(self.Mouse_check())
+                    self.Click_operation()
 
-             # rysowanie planszy
+            #rysowanie planszy
             pygame.display.update()
             time.sleep(0.1) # odciążenie procesora
 
@@ -83,28 +93,69 @@ class Gui:
             y = y + SIDE_SIZE + LINE_SIZE
             x = X_POS
 
-    #stawianie pionków
-    def Pawn_set(self, field):
-        print("pawn set")
-        #
-        print(field)
-        
-        if self.board.Get_players_placed_pawns(1)!=5 or self.board.Get_players_placed_pawns(2)!=5:
+
+    def Click_operation(self):
+
+        #sprwdzenie czy usuwamy pionek
+        if self.If_three:
+            #pozostawienie tury, graczowi, który utworzył trójkę
+            #self.board.Split_turn()
+            if self.board.Take_off_pawn(self.Mouse_check()):
+                self.If_three = False # zrczucenie przekaźnika IF_THREE
+                self.board.Split_turn() 
+        elif self.board.Get_players_placed_pawns(1)!=5 or self.board.Get_players_placed_pawns(2)!=5:
             print("putting")
-            Putting(self.board, field[0], field[1])
-            #self.Pawn_draw()
-            
+            #Putting(self.board, field[0], field[1])
+            self.Pawn_set(self.Mouse_check())
         elif self.board.Get_players_pawns_on_board(1)>2 or self.board.Get_players_pawns_on_board(2)>2:
             print("sliding")
-            Sliding(self.board, field[0], field[1])
-            #self.board.If_three_pawns(field[0], field[1])
-        
+            #Sliding(self.board, field[0], field[1])
+            self.Pawn_move(self.Mouse_check())
+        #elif TYPE_OF_MOVE == 0:
+        #    self.Pawn_set(self.Mouse_check())
+        #elif TYPE_OF_MOVE == 1:
+        #    self.Pawn_remove(self.Mouse_check())
+        #elif TYPE_OF_MOVE == 2:
+        #    self.Pawn_move(self.Mouse_check())
+        #elif TYPE_OF_MOVE == 3:
+        #    print("end of GAME")
+
+
+
+    #stawianie pionków 0
+    def Pawn_set(self, field):
+        print("pawn set")
+        print(field)
+        print("putting")
+        if Putting(self.board, field[0], field[1]):
+            self.If_three = self.board.If_three_pawns(field[1], field[0])
+            if self.If_three:
+                self.board.Split_turn()
+        else: 
+            self.If_three = False
+        print(self.If_three)
+
         self.board.Printing_board()
+
+        #self.Pawn_draw()
+        #pygame.display.update()
+        #self.board.If_three_pawns(field[1], field[0])
         #radius = SIDE_SIZE / 2
         #x = TABLE_OF_POSITION[field[0]][0]
         #y = TABLE_OF_POSITION[field[1]][0]
         #pygame.draw.circle(self.win, PLAYER1_COLOR, (x + radius, y + radius), radius)
         #pygame.display.update()
+
+    #przesuwanie pionków 2
+    def Pawn_move(self, field):
+        print("pawn set")
+        print(field)
+        print("sliding")
+        #Sliding(self.board, field[0], field[1])
+#
+        #self.board.Printing_board()
+        #self.If_three = self.board.If_three_pawns(field[1], field[0])
+        #print(self.If_three)
 
     #obsługa zdarzeń myszy
     def X_mouse_check(self, mouse_pos):

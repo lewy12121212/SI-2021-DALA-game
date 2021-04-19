@@ -11,7 +11,7 @@ def Putting(new_board, y, x):
         else:
             id = new_board.players[1].Id()
         #Umieszczanie pionka na planszy
-        new_board.Put_pawn(int(x),int(y),id)
+        return new_board.Put_pawn(int(x),int(y),id)
     
     except:
         pass

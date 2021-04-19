@@ -40,6 +40,12 @@ class Board:
     def Get_players_pawns_on_board(self,id):
         return self.players[id-1].pawns_on_board    
 
+    def Split_turn(self):
+        #Zmienia kolejkę gracza
+        if(self.turn == 1):
+            self.turn = 2
+        else: 
+            self.turn = 1
 
     #po postawieniu pionka sprawdzić czy powstała trójka
     def If_three_pawns(self,x,y):
@@ -47,37 +53,42 @@ class Board:
         #Ify zapobiegają wyjściu poza zakres tablicy
         if(x<=3):
              if((self.board[x][y]==self.board[x+1][y]==self.board[x+2][y])and self.board[x][y]!=0):
-                self.Take_off_pawn()
-                return 
+                #self.Take_off_pawn()
+                return True # informacja zwerotna o istnieniu trójki 
         if(x>=2):
              if((self.board[x][y]==self.board[x-1][y]==self.board[x-2][y])and self.board[x][y]!=0):  
-                self.Take_off_pawn()
-                return 
+                #self.Take_off_pawn()
+                return True # informacja zwerotna o istnieniu trójki 
         if(y<=3):      
             if((self.board[x][y]==self.board[x][y+1]==self.board[x][y+2])and self.board[x][y]!=0):  
-                self.Take_off_pawn()
-                return     
+                #self.Take_off_pawn()
+                return True # informacja zwerotna o istnieniu trójki   
         if(y>=2):    
              if((self.board[x][y]==self.board[x][y-1]==self.board[x][y-2])and self.board[x][y]!=0):  
-                self.Take_off_pawn()  
-                return                         
+                #self.Take_off_pawn()  
+                return True # informacja zwerotna o istnieniu trójki 
+        else:
+            return False # informacja zwerotna o istnieniu trójki                       
                           
                     
-    #Zdejmuje podany pionek przeciwnika
-    def Take_off_pawn(self): 
+    #Zdejmuje podany pionek przeciwnika 
+    def Take_off_pawn(self, field): 
         self.Printing_board()
         print("Removing opponent pawn") 
-        x = int(input("Enter the row number: "))
-        y = int(input("Enter the column number: "))       
+        x = field[1]
+        y = field[0]     
         if((self.turn==1 and self.board[x][y]==2)or(self.turn==2 and self.board[x][y]==1)):
             self.board[x][y]=0
             self.players[self.turn-1].pawns_on_board-=1
+            return True
         elif((self.turn==1 and self.board[x][y]==1)or(self.turn==2 and self.board[x][y]==2)): 
             print("You can't remove your own pawn")
-            self.Take_off_pawn()
+            return False
+            #self.Take_off_pawn(field)
         else:
             print("There is no pawn to remove")
-            self.Take_off_pawn()
+            return False
+            #self.Take_off_pawn(field)
           
     #1 - gracz 1
     #2 - gracz 2
@@ -92,25 +103,24 @@ class Board:
             self.board[x][y]=player
             self.players[self.turn-1].placed_pawns+=1
             self.players[self.turn-1].pawns_on_board+=1
-            self.If_three_pawns(x,y)
+            #self.If_three_pawns(x,y)
             #Zmienia kolejkę gracza
-            if(self.turn==1):
-                self.turn = 2
-            else: 
-                self.turn = 1
+            self.Split_turn()
+
+            return True #zwrócenie informacji o tym czy pionek został postawiony czy nie 
         #Sprawdza czy gracz chce zajęć któreś z czterech środkowych pól oraz czy typowane pole jest puste
         elif (((x==2 and (y==2 or y==3)) or (x==3 and (y==2 or y==3)))and self.board[x][y]==0 ):
             self.board[x][y]=player
             self.players[self.turn-1].placed_pawns+=1
             self.players[self.turn-1].pawns_on_board+=1
-            self.If_three_pawns(x,y)
+            #self.If_three_pawns(x,y)
             #Zmienia kolejkę gracza
-            if(self.turn==1):
-                self.turn = 2
-            else: 
-                self.turn = 1
+            self.Split_turn()
+
+            return True #zwrócenie informacji o tym czy pionek został postawiony czy nie 
         else:    
             print("You can't put your pawn here")
+            return False #zwrócenie informacji o tym czy pionek został postawiony czy nie 
 
         #self.If_three_pawns(x,y)
 
