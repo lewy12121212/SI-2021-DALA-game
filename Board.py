@@ -66,7 +66,7 @@ class Board:
     #Zdejmuje podany pionek przeciwnika
     def Take_off_pawn(self): 
         self.Printing_board()
-        print("Removing opponent pawn")   
+        print("Removing opponent pawn") 
         x = int(input("Enter the row number: "))
         y = int(input("Enter the column number: "))       
         if((self.turn==1 and self.board[x][y]==2)or(self.turn==2 and self.board[x][y]==1)):
@@ -111,6 +111,8 @@ class Board:
                 self.turn = 1
         else:    
             print("You can't put your pawn here")
+
+        #self.If_three_pawns(x,y)
 
     #Sprawdza czy gracz może przesunąć dany pionek
     def If_move_pawn(self,x,y):

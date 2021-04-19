@@ -1,11 +1,12 @@
 import Board
 import pygame, sys, os
 import time
+from Game_loop import *
 
 #zmienne globalne
 BOARD_COLOR = (255, 195, 77)
 PLAYER1_COLOR = (0, 0, 0)
-PLAYER2_COLOR = (25, 102, 255)
+PLAYER2_COLOR = (255, 255, 255)
 TABLE_OF_POSITION = []
 
 
@@ -16,13 +17,13 @@ SIDE_SIZE = 50 #długość boku pola
 
 
 class Gui:
-    def __init__(self):
-
+    def __init__(self, board):
         pygame.init()
+        self.board = board
+        self.board.Printing_board()
         # definiowanie okna gry
         self.win = pygame.display.set_mode((425, 425))
         # wyświetlanie okna gry
-
         pygame.display.set_caption("Moja Gra")
         self.Create_table_of_position()
         self.Window_while(True)
@@ -31,6 +32,7 @@ class Gui:
        
         while run: # pętla główna okna gry
             self.Draw_board()
+            self.Pawn_draw()
             for event in pygame.event.get(): # obsługa zdarzeń
                 if event.type == pygame.QUIT:
                     run = False
@@ -63,16 +65,45 @@ class Gui:
         # odświeżenie ekranu 
         #pygame.display.update()
     
-    #def Pawn_draw(self):
-        
+    def Pawn_draw(self):
+        #x = X_POS
+        #y = Y_POS
+
+        radius = SIDE_SIZE / 2
+        # funkcja rysująca kwadrat
+        for i in range(0, 6):
+            for j in range(0, 6):
+                x = TABLE_OF_POSITION[j][0]
+                y = TABLE_OF_POSITION[i][0]
+                if self.board.board[i][j] == 1:
+                    pygame.draw.circle(self.win, PLAYER1_COLOR, (x + radius, y + radius), radius)
+                elif self.board.board[i][j] == 2:
+                    pygame.draw.circle(self.win, PLAYER2_COLOR, (x + radius, y + radius), radius)
+                x = x + SIDE_SIZE + LINE_SIZE
+            y = y + SIDE_SIZE + LINE_SIZE
+            x = X_POS
 
     #stawianie pionków
     def Pawn_set(self, field):
         print("pawn set")
-        radius = SIDE_SIZE / 2
-        x = TABLE_OF_POSITION[field[0]][0]
-        y = TABLE_OF_POSITION[field[1]][0]
-        pygame.draw.circle(self.win, PLAYER1_COLOR, (x + radius, y + radius), radius)
+        #
+        print(field)
+        
+        if self.board.Get_players_placed_pawns(1)!=5 or self.board.Get_players_placed_pawns(2)!=5:
+            print("putting")
+            Putting(self.board, field[0], field[1])
+            #self.Pawn_draw()
+            
+        elif self.board.Get_players_pawns_on_board(1)>2 or self.board.Get_players_pawns_on_board(2)>2:
+            print("sliding")
+            Sliding(self.board, field[0], field[1])
+            #self.board.If_three_pawns(field[0], field[1])
+        
+        self.board.Printing_board()
+        #radius = SIDE_SIZE / 2
+        #x = TABLE_OF_POSITION[field[0]][0]
+        #y = TABLE_OF_POSITION[field[1]][0]
+        #pygame.draw.circle(self.win, PLAYER1_COLOR, (x + radius, y + radius), radius)
         #pygame.display.update()
 
     #obsługa zdarzeń myszy
@@ -119,8 +150,8 @@ class Gui:
         field_x = self.X_mouse_check(mouse_pos)
         field_y = self.Y_mouse_check(mouse_pos)
         field = [field_x, field_y]
-        print(field)
+        #print(field)
         return field
 
 
-Gui()
+#Gui()
