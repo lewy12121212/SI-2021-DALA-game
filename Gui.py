@@ -9,12 +9,12 @@ PLAYER1_COLOR = (0, 0, 0)
 PLAYER2_COLOR = (255, 255, 255)
 TABLE_OF_POSITION = []
 
-
 X_POS = 50 #startowa pozycja X
 Y_POS = 50 #startowa pozycja Y
 LINE_SIZE = 5 #szerkość przerwy
 SIDE_SIZE = 50 #długość boku pola
 
+OLD_XY = [0, 0]
 
 class Gui:
     def __init__(self, board):
@@ -22,6 +22,7 @@ class Gui:
         pygame.init()
         #inicjowanie zmiennych pomocniczych
         self.If_three = False
+        self.If_move = False
 
         #inijowanie tablicy
         self.board = board
@@ -93,7 +94,6 @@ class Gui:
             y = y + SIDE_SIZE + LINE_SIZE
             x = X_POS
 
-
     def Click_operation(self):
 
         #sprwdzenie czy usuwamy pionek
@@ -103,14 +103,35 @@ class Gui:
             if self.board.Take_off_pawn(self.Mouse_check()):
                 self.If_three = False # zrczucenie przekaźnika IF_THREE
                 self.board.Split_turn() 
+
         elif self.board.Get_players_placed_pawns(1)!=5 or self.board.Get_players_placed_pawns(2)!=5:
             print("putting")
-            #Putting(self.board, field[0], field[1])
             self.Pawn_set(self.Mouse_check())
+
         elif self.board.Get_players_pawns_on_board(1)>2 or self.board.Get_players_pawns_on_board(2)>2:
             print("sliding")
-            #Sliding(self.board, field[0], field[1])
-            self.Pawn_move(self.Mouse_check())
+            if self.If_move:
+                print("if move good")
+                if self.board.Move_pawn(OLD_XY[1], OLD_XY[0], self.Mouse_check()[1], self.Mouse_check()[0]):
+                    print("if move good tak", self.If_three)
+
+                    self.If_move = False
+                    self.If_three = self.board.If_three_pawns(self.Mouse_check()[1], self.Mouse_check()[0])
+                    if self.If_three:
+                        print("is three")
+                        self.board.Split_turn()
+                else:
+                    self.If_three = False
+                    print("if move good nie ")
+                                    
+
+            else:
+                self.Pawn_move(self.Mouse_check())
+
+        else:
+            print("END GAME")
+
+        self.board.Printing_board()
         #elif TYPE_OF_MOVE == 0:
         #    self.Pawn_set(self.Mouse_check())
         #elif TYPE_OF_MOVE == 1:
@@ -119,8 +140,6 @@ class Gui:
         #    self.Pawn_move(self.Mouse_check())
         #elif TYPE_OF_MOVE == 3:
         #    print("end of GAME")
-
-
 
     #stawianie pionków 0
     def Pawn_set(self, field):
@@ -133,8 +152,8 @@ class Gui:
                 self.board.Split_turn()
         else: 
             self.If_three = False
+        
         print(self.If_three)
-
         self.board.Printing_board()
 
         #self.Pawn_draw()
@@ -151,8 +170,28 @@ class Gui:
         print("pawn set")
         print(field)
         print("sliding")
-        #Sliding(self.board, field[0], field[1])
+        if Sliding(self.board, field[0], field[1]):
+            OLD_XY[0] = field[0]
+            OLD_XY[1] = field[1]
+            self.If_move = True
+            print(self.If_move)
+        else: 
+            self.If_move = False
+        #if Sliding(self.board, field[0], field[1]):
+        #    self.If_three = self.board.If_three_pawns(field[1], field[0])
+        #    
+        #    if self.If_three:
+        #        self.board.Split_turn()
 #
+        #    self.If_move = True
+        #    OLD_XY[0] = field[0]
+        #    OLD_XY[1] = field[1]
+        #    #self.board.Split_turn()
+        #else:
+        #    self.If_move = False
+        #    self.If_three = False
+
+#       
         #self.board.Printing_board()
         #self.If_three = self.board.If_three_pawns(field[1], field[0])
         #print(self.If_three)

@@ -29,6 +29,9 @@ def Sliding(new_board, y, x):
         else:
             id = new_board.players[1].Id()
         #Przesuwanie pionka
-        new_board.If_move_pawn(int(x),int(y))
+        if new_board.If_move_pawn(int(x),int(y)):
+            return True
+        else:
+            return False
     except:
         pass

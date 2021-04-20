@@ -128,10 +128,13 @@ class Board:
     def If_move_pawn(self,x,y):
         if((self.turn==1 and self.board[x][y]==2)or(self.turn==2 and self.board[x][y]==1)):
             print("You can't move your oponent's pawn")
+            return False
         elif((self.turn==1 and self.board[x][y]==1)or(self.turn==2 and self.board[x][y]==2)): 
-            self.Move_pawn(x,y)
+            #self.Move_pawn(x,y)
+            return True
         else:
             print("There is no pawn to move")
+            return False
 
     #Sprawdza czy dwa pola sąsiadują ze sobą
     def Neighbours(self,x,ax):
@@ -144,12 +147,13 @@ class Board:
         return False        
     
     #Sprawdza czy można przesunąć pionek na wybrane pole i go przesuwa
-    def Move_pawn(self,x,y):
-        mx = int(input("Move: Enter the row number: "))
-        my = int(input("Move: Enter the column number: "))
+    def Move_pawn(self, x, y, mx, my):
+        #mx = int(input("Move: Enter the row number: "))
+        #my = int(input("Move: Enter the column number: "))
         #Sprawdzenie czy wybrane pole nie jest puste
         if(self.board[mx][my]!=0):
             print("You can't move pawn here")
+            return False
         else:
             while(True):
                 self.Neighbours(x,mx)
@@ -169,8 +173,9 @@ class Board:
                         self.turn = 2
                     else: 
                         self.turn = 1
-                    return
+                    return True
                 else:
                     print("You can't move pawn here")
-                    mx = int(input("Move: Enter the row number: "))
-                    my = int(input("Move: Enter the column number: "))
+                    return False
+                    #mx = int(input("Move: Enter the row number: "))
+                    #my = int(input("Move: Enter the column number: "))
