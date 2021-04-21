@@ -19,3 +19,6 @@ Projekt zakłada implementację gry DALA, oraz algorytmu grającego wzorowanego 
 ##### Pliki
 * z dużej litery
 * łączenie wyrazów przy pomocy dużej litery
+
+Instalacja biblioteki PyGame:
+pip install pygame
