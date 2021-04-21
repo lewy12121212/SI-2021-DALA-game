@@ -17,6 +17,8 @@ SIDE_SIZE = 50 #długość boku pola
 OLD_XY = [0, 0]
 
 class Gui:
+    
+    run = True
     def __init__(self, board):
         #inicjowanie biblioteki pyGame
         pygame.init()
@@ -34,19 +36,19 @@ class Gui:
         #tworzenie tablicy pozycji
         self.Create_table_of_position()
         #uruchomienie głównej funckcji GUI
-        self.Window_while(True)
+        self.Window_while()
 
-    def Window_while(self, run):
+    def Window_while(self):
        
         #pętla główna okna gry
-        while run: 
+        while self.run: 
             self.Draw_board()
             self.Pawn_draw()
 
             #obsługa zdarzeń
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    run = False
+                    self.run = False
                 elif event.type == pygame.MOUSEBUTTONUP:
                     self.Click_operation()
 
@@ -92,12 +94,25 @@ class Gui:
             y = y + SIDE_SIZE + LINE_SIZE
             x = X_POS
 
+    #Sparawdzanie czy można zakończyć rozgrywkę
+    def If_end(self):
+        print("GRACZ 1: ",self.board.Get_players_pawns_on_board(1))
+        print("GRACZ 2: ",self.board.Get_players_pawns_on_board(2))
+        if self.board.Get_players_pawns_on_board(1)<=2:
+            return True 
+        elif self.board.Get_players_pawns_on_board(2)<=2:     
+            return True 
+        else:
+            return False 
+
     def Click_operation(self):
 
         #sprwdzenie czy usuwamy pionek
         if self.If_three:
             print("Faktycznie trójka :D")
             if self.board.Take_off_pawn(self.Mouse_check()):
+                if self.If_end():
+                    self.run = False #Koniec gry
                 self.board.Split_turn()
                 self.If_three = False
 
@@ -108,8 +123,8 @@ class Gui:
         elif self.board.Get_players_pawns_on_board(1)>2 or self.board.Get_players_pawns_on_board(2)>2:
             print("sliding")
             self.Pawn_move(self.Mouse_check())
-
         else:
+            #self.run = False
             print("END GAME")
 
         self.board.Printing_board()

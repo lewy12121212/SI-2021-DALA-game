@@ -67,10 +67,17 @@ class Board:
              if((self.board[x][y]==self.board[x][y-1]==self.board[x][y-2]) and self.board[x][y]!=0):  
                 #self.Take_off_pawn()  
                 return True # informacja zwerotna o istnieniu trójki 
+        if(x>=2 and x<=4):
+            if((self.board[x][y]==self.board[x+1][y]==self.board[x-1][y]) and self.board[x][y]!=0):
+                return True # informacja zwerotna o istnieniu trójki
+        if(y>=2 and y<=4):
+            if((self.board[x][y]==self.board[x][y+1]==self.board[x][y-1]) and self.board[x][y]!=0):
+                return True # informacja zwerotna o istnieniu trójki         
         else:
             return False # informacja zwerotna o istnieniu trójki                       
                           
-                    
+
+
     #Zdejmuje podany pionek przeciwnika 
     def Take_off_pawn(self, field): 
         self.Printing_board()
