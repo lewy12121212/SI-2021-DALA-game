@@ -52,19 +52,19 @@ class Board:
 
         #Ify zapobiegają wyjściu poza zakres tablicy
         if(x<=3):
-             if((self.board[x][y]==self.board[x+1][y]==self.board[x+2][y])and self.board[x][y]!=0):
+             if((self.board[x][y]==self.board[x+1][y]==self.board[x+2][y]) and self.board[x][y]!=0):
                 #self.Take_off_pawn()
                 return True # informacja zwerotna o istnieniu trójki 
         if(x>=2):
-             if((self.board[x][y]==self.board[x-1][y]==self.board[x-2][y])and self.board[x][y]!=0):  
+             if((self.board[x][y]==self.board[x-1][y]==self.board[x-2][y]) and self.board[x][y]!=0):  
                 #self.Take_off_pawn()
                 return True # informacja zwerotna o istnieniu trójki 
         if(y<=3):      
-            if((self.board[x][y]==self.board[x][y+1]==self.board[x][y+2])and self.board[x][y]!=0):  
+            if((self.board[x][y]==self.board[x][y+1]==self.board[x][y+2]) and self.board[x][y]!=0):  
                 #self.Take_off_pawn()
                 return True # informacja zwerotna o istnieniu trójki   
         if(y>=2):    
-             if((self.board[x][y]==self.board[x][y-1]==self.board[x][y-2])and self.board[x][y]!=0):  
+             if((self.board[x][y]==self.board[x][y-1]==self.board[x][y-2]) and self.board[x][y]!=0):  
                 #self.Take_off_pawn()  
                 return True # informacja zwerotna o istnieniu trójki 
         else:
@@ -151,8 +151,10 @@ class Board:
         #mx = int(input("Move: Enter the row number: "))
         #my = int(input("Move: Enter the column number: "))
         #Sprawdzenie czy wybrane pole nie jest puste
+        print(x, " ", y, " - ", mx, " ", my)
+
         if(self.board[mx][my]!=0):
-            print("You can't move pawn here")
+            print("1. You can't move pawn here")
             return False
         else:
             while(True):
@@ -167,15 +169,12 @@ class Board:
                     else:
                         self.board[int(mx)][int(my)]=2
                     #Sprawdzanie czy nie wystąpił rząd 3
-                    self.If_three_pawns(int(mx),int(my))
+                    #self.If_three_pawns(int(mx),int(my))
                     #Zmiana tury
-                    if(self.turn==1):
-                        self.turn = 2
-                    else: 
-                        self.turn = 1
+                    self.Split_turn()
                     return True
                 else:
-                    print("You can't move pawn here")
+                    print("2. You can't move pawn here")
                     return False
                     #mx = int(input("Move: Enter the row number: "))
                     #my = int(input("Move: Enter the column number: "))

@@ -33,5 +33,6 @@ def Sliding(new_board, y, x):
             return True
         else:
             return False
+
     except:
         pass
