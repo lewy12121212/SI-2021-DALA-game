@@ -25,6 +25,7 @@ class Board:
                 print(y,end = " ")
             print()
         
+        
     #Sprawdza czy którekolwiek z czterech środkowych pól planszy jest puste, jeśli tak zwraca fałsz, w przeciwnym wypadku zwraca prawdę
     def Four_field(self):
         if(self.board[2][2]==0 or self.board[2][3]==0 or self.board[3][2]==0 or self.board[3][3]==0):
@@ -38,7 +39,11 @@ class Board:
 
     #Podaje ilość pionków gracza znajdujących się na planszy
     def Get_players_pawns_on_board(self,id):
-        return self.players[id-1].pawns_on_board    
+        return self.players[id-1].pawns_on_board   
+    
+    #Podaje ilość pionków gracza znajdujących się na planszy
+    def Get_players_pawns(self,id):
+        return self.players[id-1].all_pawns  
 
     def Split_turn(self):
         #Zmienia kolejkę gracza
@@ -87,6 +92,7 @@ class Board:
         if((self.turn==1 and self.board[x][y]==2)or(self.turn==2 and self.board[x][y]==1)):
             self.board[x][y]=0
             self.players[self.turn-1].pawns_on_board-=1
+            self.players[self.turn-1].SubtractPawn()
             return True
         elif((self.turn==1 and self.board[x][y]==1)or(self.turn==2 and self.board[x][y]==2)): 
             print("You can't remove your own pawn")

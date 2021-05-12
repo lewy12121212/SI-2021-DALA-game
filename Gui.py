@@ -9,6 +9,8 @@ PLAYER1_COLOR = (0, 0, 0)
 PLAYER2_COLOR = (255, 255, 255)
 TABLE_OF_POSITION = []
 
+NUMBER_OF_PAWNS = 5
+
 X_POS = 50 #startowa pozycja X
 Y_POS = 50 #startowa pozycja Y
 LINE_SIZE = 5 #szerkość przerwy
@@ -18,14 +20,16 @@ OLD_XY = [0, 0]
 
 class Gui:
     
-    run = True
+    
     def __init__(self, board):
         #inicjowanie biblioteki pyGame
         pygame.init()
+        self.run = True
+        
         #inicjowanie zmiennych pomocniczych
         self.If_three = False
         self.If_move = False
-
+        
         #inijowanie tablicy
         self.board = board
         self.board.Printing_board()
@@ -96,14 +100,14 @@ class Gui:
 
     #Sparawdzanie czy można zakończyć rozgrywkę
     def If_end(self):
-        print("GRACZ 1: ",self.board.Get_players_pawns_on_board(1))
-        print("GRACZ 2: ",self.board.Get_players_pawns_on_board(2))
-        if self.board.Get_players_pawns_on_board(1)<=2:
-            return True 
-        elif self.board.Get_players_pawns_on_board(2)<=2:     
-            return True 
+        print("GRACZ 1: ",self.board.Get_players_pawns(1))
+        print("GRACZ 2: ",self.board.Get_players_pawns(2))
+        if self.board.Get_players_pawns(1)<3:
+            return True
+        elif self.board.Get_players_pawns(2)<3:
+            return True
         else:
-            return False 
+            return False
 
     def Click_operation(self):
 
@@ -116,11 +120,11 @@ class Gui:
                 self.board.Split_turn()
                 self.If_three = False
 
-        elif self.board.Get_players_placed_pawns(1)!=5 or self.board.Get_players_placed_pawns(2)!=5:
+        elif self.board.Get_players_placed_pawns(1)!=NUMBER_OF_PAWNS or self.board.Get_players_placed_pawns(2)!=NUMBER_OF_PAWNS:
             print("putting")
             self.Pawn_set(self.Mouse_check())
 
-        elif self.board.Get_players_pawns_on_board(1)>2 or self.board.Get_players_pawns_on_board(2)>2:
+        elif self.board.Get_players_placed_pawns(1) == NUMBER_OF_PAWNS or self.board.Get_players_placed_pawns(2) == NUMBER_OF_PAWNS:
             print("sliding")
             self.Pawn_move(self.Mouse_check())
         else:
