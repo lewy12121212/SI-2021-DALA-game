@@ -12,8 +12,20 @@ class Game:
         self.putting()
         self.moving()
 
+    def end(self):
+        if self.board.Get_players_placed_pawns(1)!=5 or self.board.Get_players_placed_pawns(2)!=5:
+            return True
+        elif self.board.Get_players_pawns_on_board(1)>2 or self.board.Get_players_pawns_on_board(2)>2:
+            return True
+        else:
+            return False
+
+    def take_off_pawn():
+        pass
+
     def putting(self):
-        while (self.board.Get_players_placed_pawns(1)!=5 or self.board.Get_players_placed_pawns(2)!=5):
+        
+        if not self.end():
             try:
                 self.board.Printing_board()
                 #Podawanie miejsca postawienia pionka
@@ -27,6 +39,9 @@ class Game:
 
                 #Umieszczanie pionka na planszy
                 self.board.Put_pawn(int(x),int(y),id)
+
+                #zmiana tury
+                self.board.change_turn()
 
             except:
                 pass

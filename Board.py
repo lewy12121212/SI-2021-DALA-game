@@ -45,21 +45,18 @@ class Board:
         #Ify zapobiegają wyjściu poza zakres tablicy
         if(x<=3):
             if((self.board[x][y]==self.board[x+1][y]==self.board[x+2][y])and self.board[x][y]!=0):
-                self.Take_off_pawn()
-                return 
+                return True
         if(x>=2):
             if((self.board[x][y]==self.board[x-1][y]==self.board[x-2][y])and self.board[x][y]!=0):  
-                self.Take_off_pawn()
-                return 
+                return True
         if(y<=3):      
             if((self.board[x][y]==self.board[x][y+1]==self.board[x][y+2])and self.board[x][y]!=0):  
-                self.Take_off_pawn()
-                return     
+                return True  
         if(y>=2):    
             if((self.board[x][y]==self.board[x][y-1]==self.board[x][y-2])and self.board[x][y]!=0):  
-                self.Take_off_pawn()  
-                return                         
-
+                return True                       
+        else: 
+            return False
                     
     #Zdejmuje podany pionek przeciwnika
     def Take_off_pawn(self): 
@@ -92,10 +89,7 @@ class Board:
             self.players[self.turn-1].pawns_on_board+=1
             self.If_three_pawns(x,y)
             #Zmienia kolejkę gracza
-            if(self.turn==1):
-                self.turn = 2
-            else: 
-                self.turn = 1
+            self.change_turn()
         #Sprawdza czy gracz chce zajęć któreś z czterech środkowych pól oraz czy typowane pole jest puste
         elif (((x==2 and (y==2 or y==3)) or (x==3 and (y==2 or y==3)))and self.board[x][y]==0 ):
             self.board[x][y]=player
@@ -103,10 +97,7 @@ class Board:
             self.players[self.turn-1].pawns_on_board+=1
             self.If_three_pawns(x,y)
             #Zmienia kolejkę gracza
-            if(self.turn==1):
-                self.turn = 2
-            else: 
-                self.turn = 1
+            self.change_turn()
         else:    
             print("You can't put your pawn here")
 
@@ -169,11 +160,14 @@ class Board:
                     #Sprawdzanie czy nie wystąpił rząd 3
                     self.If_three_pawns(int(mx),int(my))
                     #Zmiana tury
-                    if(self.turn==1):
-                        self.turn = 2
-                    else: 
-                        self.turn = 1
+                    self.change_turn()
                     return True
                 else:
                     print("You can't move pawn here")
                     return False
+    
+    def change_turn(self):
+        if(self.turn==1):
+            self.turn = 2
+        else: 
+            self.turn = 1
