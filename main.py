@@ -4,13 +4,15 @@ import os
 import Gui
 import threading
 import time
+import Game
 from Game_loop import *
 
 
 
+
 print("Dala game started!")
-new_board = Board.Board() 
-gui = Gui.Gui(new_board)
+game = Game.Game()
+game.run()
 #threading.Thread(target=Gui.Gui()).start()
 #new_board.Printing_board()
 
