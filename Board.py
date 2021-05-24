@@ -44,7 +44,7 @@ class Board:
 
         # Podaje ilość pionków gracza znajdujących się na planszy
     def Get_players_pawns(self, id):
-          return self.players[id - 1].all_pawns
+        return self.players[id - 1].all_pawns
 
     #po postawieniu pionka sprawdzić czy powstała trójka
     def If_three_pawns(self,x,y):

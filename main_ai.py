@@ -2,6 +2,7 @@ from Board import Board
 from mcts.nodes import *
 from mcts.search import MonteCarloTreeSearch
 from State import State
+from Gui import Gui
 
 def init():
     init_board = State(Board(), 1, 0)
@@ -13,8 +14,10 @@ def init():
     return c_state, c_board
 
 
+
 c_state, c_board = init()
 c_board.Printing_board(c_board.turn)
+gameWindow = Gui(c_board)
 # graphics(c_board)
 next_move = 2
 next_phase = 0
@@ -34,6 +37,7 @@ while True:
     c_state = best_node.state
     c_board = c_state.board
     c_board.Printing_board(next_move)
+    gameWindow.setBoard(c_board)
     # graphics(c_board)
     if(c_board.If_three_pawns(c_state.current_move[0],c_state.current_move[1])):
         next_phase = 2
