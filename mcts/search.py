@@ -11,7 +11,13 @@ class MonteCarloTreeSearch:
             reward = v.rollout()
             v.backpropagate(reward)
         # exploitation only
-        return self.root.best_child(c_param=0.)
+        #for c in self.root.children:
+            #print(c.state.current_move, " = ", c.score)
+        print()
+        print(self.root.best_child(c_param=0.).state.current_move)
+        best = self.root.best_child(c_param=0.)
+
+        return best
 
     def tree_policy(self):
         current_node = self.root

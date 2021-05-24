@@ -1,13 +1,15 @@
 import numpy as np
 from collections import defaultdict
-from tictactoe import *
+from State import *
+import math
 
 class MonteCarloTreeSearchNode(object):
-    def __init__(self, state: TicTacToeGameState, parent=None):
+    def __init__(self, state: State, parent=None):
         self._number_of_visits = 0.
         self._results = defaultdict(int)
         self.state = state
         self.parent = parent
+        self.score = 0
         self.children = []
 
     @property
@@ -18,8 +20,8 @@ class MonteCarloTreeSearchNode(object):
 
     @property
     def q(self):
-        wins = self._results[self.parent.state.next_to_move]
-        loses = self._results[-1 * self.parent.state.next_to_move]
+        wins = self._results[self.parent.state.whose_move]
+        loses = self._results[2 * self.parent.state.whose_move]
         return wins - loses
 
     @property
@@ -54,11 +56,16 @@ class MonteCarloTreeSearchNode(object):
         return len(self.untried_actions) == 0
 
     def best_child(self, c_param=1.4):
-        choices_weights = [
-            (c.q / (c.n)) + c_param * np.sqrt((2 * np.log(self.n) / (c.n)))
-            for c in self.children
-        ]
-        return self.children[np.argmax(choices_weights)]
+        choices_weights = []
+        best = self.children[0]
+        for c in self.children:
+            s = (c.q / float(c.n)) + c_param * math.sqrt((2 * float(math.log(self.n)) / float(c.n)))
+            c.score = s
+            if best.score < c.score:
+                best = c
+        return best
+
 
     def rollout_policy(self, possible_moves):
+        x = len(possible_moves)
         return possible_moves[np.random.randint(len(possible_moves))]
