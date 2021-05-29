@@ -6,7 +6,7 @@ import math
 class MonteCarloTreeSearchNode(object):
     def __init__(self, state: State, parent=None):
         self._number_of_visits = 0.
-        self._results = defaultdict(int)
+        self.results = defaultdict(int)
         self.state = state
         self.parent = parent
         self.score = 0
@@ -20,8 +20,8 @@ class MonteCarloTreeSearchNode(object):
 
     @property
     def q(self):
-        wins = self._results[self.parent.state.whose_move]
-        loses = self._results[2 * self.parent.state.whose_move]
+        wins = self.results[self.parent.state.whose_move]
+        loses = self.results[-1 * self.parent.state.whose_move]
         return wins - loses
 
     @property
@@ -42,13 +42,16 @@ class MonteCarloTreeSearchNode(object):
         current_rollout_state = self.state
         while not current_rollout_state.is_game_over():
             possible_moves = current_rollout_state.get_legal_actions()
-            action = self.rollout_policy(possible_moves)
-            current_rollout_state = current_rollout_state.move(action)
+            if not possible_moves:
+                return current_rollout_state.game_result
+            else:
+                action = self.rollout_policy(possible_moves)
+                current_rollout_state = current_rollout_state.move(action)
         return current_rollout_state.game_result
 
     def backpropagate(self, result):
         self._number_of_visits += 1.
-        self._results[result] += 1.
+        self.results[result] += 1.
         if self.parent:
             self.parent.backpropagate(result)
 
@@ -56,6 +59,7 @@ class MonteCarloTreeSearchNode(object):
         return len(self.untried_actions) == 0
 
     def best_child(self, c_param=1.4):
+
         choices_weights = []
         best = self.children[0]
         for c in self.children:
@@ -64,6 +68,8 @@ class MonteCarloTreeSearchNode(object):
             if best.score < c.score:
                 best = c
         return best
+
+
 
 
     def rollout_policy(self, possible_moves):

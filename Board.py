@@ -16,6 +16,7 @@ class Board:
         self.start = 1
         self.phase = 0
         self.X = 0
+        self.init_board = [[2,2],[2,3],[3,2],[3,3]]
 
     #Wypisuje planszę
     def Printing_board(self,who):
@@ -48,28 +49,36 @@ class Board:
 
     #po postawieniu pionka sprawdzić czy powstała trójka
     def If_three_pawns(self,x,y):
-
+        
+        #result = False
         #Ify zapobiegają wyjściu poza zakres tablicy
         if(x<=3):
             if((self.board[x][y]==self.board[x+1][y]==self.board[x+2][y])and self.board[x][y]!=0):
-                return True
+                return True        
         if(x>=2):
             if((self.board[x][y]==self.board[x-1][y]==self.board[x-2][y])and self.board[x][y]!=0):  
                 return True
-        if(y<=3):      
+        if(y<=3):
             if((self.board[x][y]==self.board[x][y+1]==self.board[x][y+2])and self.board[x][y]!=0):  
                 return True  
-        if(y>=2):    
+        if(y>=2):
             if((self.board[x][y]==self.board[x][y-1]==self.board[x][y-2])and self.board[x][y]!=0):  
-                return True                       
-        else: 
-            return False
+                return True
+        if (x >= 1 and x <= 4):
+            if ((self.board[x][y] == self.board[x + 1][y] == self.board[x - 1][y]) and self.board[x][y] != 0):
+                return True  # informacja zwerotna o istnieniu trójki
+        if (y >= 1 and y <= 4):
+            if ((self.board[x][y] == self.board[x][y + 1] == self.board[x][y - 1]) and self.board[x][y] != 0):
+                return True  # informacja zwerotna o istnieniu trójki
+
+        return False
                     
     #Zdejmuje podany pionek przeciwnika
     def Take_off_pawn(self, x, y, who):
         #self.Printing_board()
         #print("Removing opponent pawn")
         oponent = -1
+        #print("take off: ", who)
         if(who == 1):
             oponent = 1
         else:
@@ -149,11 +158,11 @@ class Board:
 
     def end(self):
         if self.Get_players_pawns(1)<3:
-            return 1
+            return 2
         elif self.Get_players_pawns(2)<3:
             #self.X+=1
             #print(self.X)
-            return 2
+            return 1
         else:
             return 0
 

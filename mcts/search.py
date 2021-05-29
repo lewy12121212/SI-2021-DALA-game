@@ -12,10 +12,10 @@ class MonteCarloTreeSearch:
             v.backpropagate(reward)
         # exploitation only
         #for c in self.root.children:
-            #print(c.state.current_move, " = ", c.score)
+         #   print(c.state.current_move, " = ", c.score)
         print()
         print(self.root.best_child(c_param=0.).state.current_move)
-        best = self.root.best_child(c_param=0.)
+        best = self.root.best_child(c_param=1.4)
 
         return best
 

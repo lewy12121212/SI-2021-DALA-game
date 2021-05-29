@@ -1,12 +1,15 @@
 import copy
-
+import random
 
 class State:
+    empty_moves = 0
     def __init__(self, board, whose_move, game_phase, c_move=None):
         self.board = board
         self.whose_move = whose_move 
         self.game_phase = game_phase #0 - stawianie, 1 - ruch, 2 - zbijanko
         self.current_move = c_move
+        self.empty_moves = 0
+        self.start = 0
 
     #dodatkowe metody statusu gry
     def get_game_phase(self):
@@ -18,10 +21,17 @@ class State:
     #1: {[2,2],[3,2]}
     def putting_board_iterator(self):
         table_of_legal_action = []
-        for i in range(6):
-            for j in range(6):
-                if self.board.board[i][j] == 0:
-                    table_of_legal_action.append([i, j])
+        if self.start == 0:
+            for i in self.board.init_board:
+                if self.board.board[i[0]][i[1]] == 0:
+                    table_of_legal_action.append(i)
+            if not table_of_legal_action:
+                self.start = 1
+        if self.start == 1:
+            for i in range(6):
+                for j in range(6):
+                    if self.board.board[i][j] == 0:
+                        table_of_legal_action.append([i, j])
         if not table_of_legal_action:
             print('x0')
         return table_of_legal_action
@@ -35,6 +45,7 @@ class State:
         
         if not table_of_legal_action:
             print('x1')
+            self.empty_moves = 1
         return table_of_legal_action
 
     def taking_off_board_iterator(self):
@@ -77,10 +88,22 @@ class State:
     def game_result(self):
         # check if game is over
         status = self.board.end()
-        if status == 1:
-            return 1.
-        elif status == 2:
-            return 2.
+        if(self.whose_move == 1):
+            if status == 1:
+                return 1.
+            elif status == 2:
+                return -1.
+            else:
+                return None
+        elif(self.whose_move == 2):
+            if status == 1:
+                return 1.
+            elif status == 2:
+                return -1.
+            else:
+                return None
+        elif self.empty_moves == 1:
+            return 0.
         else:
             return None
 
