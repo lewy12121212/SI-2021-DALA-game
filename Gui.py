@@ -24,11 +24,9 @@ class Gui:
         #inicjowanie biblioteki pyGame
         #pygame.init()
         self.run = True
-        
         #inicjowanie zmiennych pomocniczych
         self.If_three = False
         self.If_move = False
-        
         #inijowanie tablicy
         self.board = board
         #self.board.Printing_board()

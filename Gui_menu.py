@@ -5,9 +5,9 @@ import main_ai
 
 SURFACE = pygame.display.set_mode((600, 425))
 
-def start_game(simulation_count):
-    print("sim print:", simulation_count)
-    game = main_ai.Game(simulation_count, SURFACE)
+def start_game(mode, simulation_count):
+    print("sim print:", simulation_count, "mode: ", mode)
+    game = main_ai.Game(mode, simulation_count, SURFACE)
     game.start()
     # Do the job here !
 
@@ -15,7 +15,7 @@ class GameMenu:
     def __init__(self) -> None:
         self.menu = pygame_menu.Menu(300, 400, 'Welcome', theme=pygame_menu.themes.THEME_GREEN)
         self.simulation_count = 100
-        self.mode = 1
+        self.mode = 0
 
     def start(self) -> None:
         self.menu.add.text_input('Symulacje :', default=100, onchange=self.set_count)
@@ -35,7 +35,7 @@ class GameMenu:
         print(self.simulation_count, " + ", count)
 
     def start_the_game(self):
-        start_game(int(self.simulation_count))
+        start_game(self.mode, int(self.simulation_count))
 
 
 

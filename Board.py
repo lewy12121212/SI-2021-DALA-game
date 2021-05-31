@@ -18,6 +18,10 @@ class Board:
         self.X = 0
         self.init_board = [[2,2],[2,3],[3,2],[3,3]]
 
+    #zwraca plansze
+    def Get_board(self):
+        return self.board
+
     #Wypisuje planszę
     def Printing_board(self,who):
         print("")
@@ -101,7 +105,7 @@ class Board:
     def Put_pawn(self, x, y, who):
         #Sprawdza czy cztery środkowe pola zostały zapełnione po raz pierwszy0
         #if(self.start==0):
-         #   self.Four_field()
+        #   self.Four_field()
         #Sprawdza czy zostały najpierw zajęte cztery środkowe pola oraz czy typowane pole jest puste
         if(self.start==1 and self.board[x][y]==0 and self.Get_players_placed_pawns(who) < 12):
             self.board[x][y]=who
