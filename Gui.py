@@ -19,8 +19,7 @@ SIDE_SIZE = 50 #długość boku pola
 OLD_XY = [0, 0]
 
 class Gui:
-    
-    
+
     def __init__(self, board):
         #inicjowanie biblioteki pyGame
         pygame.init()
