@@ -50,11 +50,16 @@ class Game:
         self.gameWindow.setBoard(self.c_board)
 
     def user_player_move(self):
-        self.c_board = Gui_user.user_move(self.c_board, self.Player, self.next_phase)
+        self.c_board, user_last_x, user_last_y = self.gui_user.user_move(self.c_board, 2, self.next_phase)
         self.gameWindow.setBoard(self.c_board)
+        return user_last_x, user_last_y
 
     def user_vs_ai(self):
+        self.gui_user = Gui_user.Gui_user(self.c_board, 2)
+
         while True:
+            print("while phase: ", self.next_phase)
+
             if self.Player == 1:
                 self.ai_player_move()
                 # graphics(c_board)
@@ -81,23 +86,26 @@ class Game:
                     break
 
             elif self.Player == 2:
-                self.user_player_move()
+                user_last_x, user_last_y = self.user_player_move()
+                print("user x/y:",user_last_x,": ", user_last_y)
                 # graphics(c_board)
                 #print("trojka2 " + str(c_board.If_three_pawns(c_state.current_move[0], c_state.current_move[1])))
                 if(self.next_phase == 1):
-                    if (self.c_board.If_three_pawns(self.c_state.current_move[2], self.c_state.current_move[3])):
+                    if (self.c_board.If_three_pawns(user_last_y, user_last_x)):
                         print("ok")
                         self.next_phase = 2
                         self.Player = 2
                     else:
+                        self.c_board.set_state_for_user_move()
                         self.next_phase = self.c_board.phase
                         self.Player = 1
                 else:
-                    if (self.c_board.If_three_pawns(self.c_state.current_move[0], self.c_state.current_move[1])):
+                    if (self.c_board.If_three_pawns(user_last_y, user_last_x)):
                         print("ok")
                         self.next_phase = 2
                         self.Player = 2
                     else:
+                        self.c_board.set_state_for_user_move()
                         self.next_phase = self.c_board.phase
                         self.Player = 1
 
@@ -109,6 +117,8 @@ class Game:
     def ai_vs_ai(self):
 
         while True:
+            print("while phase: ", self.next_phase)
+
             if self.Player == 1:
                 self.ai_player_move()
                 # graphics(c_board)

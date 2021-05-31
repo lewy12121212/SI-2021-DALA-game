@@ -18,6 +18,12 @@ class Board:
         self.X = 0
         self.init_board = [[2,2],[2,3],[3,2],[3,3]]
 
+    #sprawdzenie ilości poionków przy ruchu użytkownika
+    def set_state_for_user_move(self):
+        if self.Get_players_placed_pawns(1) == 12 and self.Get_players_placed_pawns(2) == 12:
+            self.phase = 1
+
+
     #zwraca plansze
     def Get_board(self):
         return self.board
