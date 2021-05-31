@@ -59,6 +59,7 @@ class Game:
 
         while True:
             print("while phase: ", self.next_phase)
+            print("end: ", self.c_board.end())
 
             if self.Player == 1:
                 self.ai_player_move()
@@ -109,7 +110,7 @@ class Game:
                         self.next_phase = self.c_board.phase
                         self.Player = 1
 
-                if self.c_state.is_game_over():
+                if self.c_board.end() == 1 or self.c_board.end() == 2:
                     break
 
         print("Koniec")

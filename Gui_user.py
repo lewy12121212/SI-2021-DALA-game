@@ -68,7 +68,7 @@ class Gui_user:
             time.sleep(0.001)
         
         if not self.board.board[self.field[1]][self.field[0]] == self.player:
-            return 0
+            return 1
 
         self.old_field = self.field
         if_click = True
@@ -80,11 +80,10 @@ class Gui_user:
                     if_click = False
             time.sleep(0.001)
 
-        if self.board.board[self.field[1]][self.field[0]] == 0:
-            self.board.board[self.old_field[1]][self.old_field[0]] = self.player
+        if self.board.board[self.field[1]][self.field[0]] == 0 and self.if_neighbours():
+            self.board.board[self.old_field[1]][self.old_field[0]] = 0
             self.board.board[self.field[1]][self.field[0]] = self.player
             return 0
-
         else:
             return 1
 
@@ -102,12 +101,28 @@ class Gui_user:
         print(self.field[1], ":", self.field[0])
         if self.board.board[self.field[1]][self.field[0]] == 1:
             self.board.board[self.field[1]][self.field[0]] = 0
+            self.board.players[0].pawns_on_board -= 1 #UWAGA PLAYER NA SZYWNO! :/
+            self.board.players[0].SubtractPawn()
             return 0
         else:
             return 1
 
-    def Update_board(self):
-        pass
+    def if_neighbours(self):
+
+        x_bool = False
+        y_bool = False
+        #sprawdzenie X
+        if self.old_field[0] == self.field[0] - 1 or self.old_field[0] == self.field[0] + 1:
+            x_bool = True
+            
+        #sprawdzenie Y
+        if self.old_field[1] == self.field[1] - 1 or self.old_field[1] == self.field[1] + 1:
+            y_bool = True
+        
+        if x_bool and y_bool or not x_bool and not y_bool:
+            return False
+        else:
+            return True
 
     #obsługa zdarzeń myszy
     def X_mouse_check(self, mouse_pos):
