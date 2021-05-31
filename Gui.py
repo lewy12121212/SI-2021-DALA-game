@@ -20,9 +20,9 @@ OLD_XY = [0, 0]
 
 class Gui:
 
-    def __init__(self, board):
+    def __init__(self, board, window):
         #inicjowanie biblioteki pyGame
-        pygame.init()
+        #pygame.init()
         self.run = True
         
         #inicjowanie zmiennych pomocniczych
@@ -33,7 +33,9 @@ class Gui:
         self.board = board
         #self.board.Printing_board()
         # definiowanie okna gry
-        self.win = pygame.display.set_mode((425, 425))
+        #self.win = pygame.display.set_mode((425, 425))
+        self.win = window
+        self.win.fill((0,0,0))
         # wyświetlanie okna gry
         pygame.display.set_caption("Moja Gra")
         #tworzenie tablicy pozycji
@@ -45,19 +47,17 @@ class Gui:
         
         #pętla główna okna gry
         #while True: 
-            self.Draw_board()
-            self.Pawn_draw()
-
-            #obsługa zdarzeń
-            #for event in pygame.event.get():
-            #    if event.type == pygame.QUIT:
-            #        self.run = False
-            #    elif event.type == pygame.MOUSEBUTTONUP:
-            #        self.Click_operation()
-
-            #rysowanie planszy
-            pygame.display.update()
-            #time.sleep(0.1) # odciążenie procesora
+        self.Draw_board()
+        self.Pawn_draw()
+        #obsługa zdarzeń
+        #for event in pygame.event.get():
+        #    if event.type == pygame.QUIT:
+        #        self.run = False
+        #    elif event.type == pygame.MOUSEBUTTONUP:
+        #        self.Click_operation()
+        #rysowanie planszy
+        pygame.display.update()
+        #time.sleep(0.1) # odciążenie procesora
 
     def setBoard(self, board):
         self.board = board
