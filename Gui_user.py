@@ -9,6 +9,8 @@ class Gui_user:
     def __init__(self, board, player) -> None:
         self.board = board
         self.player = player
+        self.start_normal_game = False
+        self.middle_fields = ([2,2],[3,2],[3,3],[2,3])
 
     def user_move(self, board, player, phase):
         self.board = board
@@ -17,10 +19,14 @@ class Gui_user:
         self.good_move = True
         self.field = None
 
+        self.set_up_start_normal_game()
+
         print("phase:", phase)
         while self.good_move: 
             #obsługa zdarzeń
-            if self.phase == 0:
+            if self.start_normal_game == False:
+                self.good_move = self.if_putting_first_four()
+            elif self.phase == 0:
                 self.good_move = self.if_putting()
             elif self.phase == 1:
                 self.good_move = self.if_move()
@@ -35,8 +41,48 @@ class Gui_user:
         if(self.phase == 0):
             self.board.players[player-1].placed_pawns += 1
 
-
         return self.board, self.field[0], self.field[1]
+
+    def search(self, list, platform):
+        for i in range(len(list)):
+            if list[i] == platform:
+                return True
+        return False
+
+    def set_up_start_normal_game(self):
+        for i in self.middle_fields:
+            print(i,": ", self.board.board[i[1]][i[0]])
+            if self.board.board[i[1]][i[0]] == 0:
+                print("ojć")
+                return 0
+
+        print("Oj jojoj - coś poszło nie tak :/")
+        self.start_normal_game = True
+
+    def if_putting_first_four(self):
+        #1 one moves
+        if_click = True
+
+        while if_click:
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONUP:
+                    self.field = self.Mouse_check()
+                    if_click = False
+            time.sleep(0.001)
+
+        if self.search(self.middle_fields, self.field):
+            print("prawadoto")
+        else:
+            print("nieprawdato")
+            return 1
+
+        print(self.field[1], ":", self.field[0])
+        if self.board.board[self.field[1]][self.field[0]] == 0:
+            self.board.board[self.field[1]][self.field[0]] = self.player
+            self.start_normal_game = False
+            return 0
+        else:
+            return 1
 
     def if_putting(self):
         #1 one moves

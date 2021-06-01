@@ -58,8 +58,8 @@ class Game:
         self.gui_user = Gui_user.Gui_user(self.c_board, 2)
 
         while True:
-            print("while phase: ", self.next_phase)
-            print("end: ", self.c_board.end())
+            #print("while phase: ", self.next_phase)
+            #print("end: ", self.c_board.end())
 
             if self.Player == 1:
                 self.ai_player_move()
@@ -88,7 +88,7 @@ class Game:
 
             elif self.Player == 2:
                 user_last_x, user_last_y = self.user_player_move()
-                print("user x/y:",user_last_x,": ", user_last_y)
+                #print("user x/y:",user_last_x,": ", user_last_y)
                 # graphics(c_board)
                 #print("trojka2 " + str(c_board.If_three_pawns(c_state.current_move[0], c_state.current_move[1])))
                 if(self.next_phase == 1):

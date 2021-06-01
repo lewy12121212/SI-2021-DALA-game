@@ -167,7 +167,7 @@ class Board:
     
 
     def end(self):
-        print(self.Get_players_pawns(1), ":", self.Get_players_pawns(2))
+        #print(self.Get_players_pawns(1), ":", self.Get_players_pawns(2))
         if self.Get_players_pawns(1)<3:
             return 2
         elif self.Get_players_pawns(2)<3:
