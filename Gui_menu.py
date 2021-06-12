@@ -23,6 +23,7 @@ class RestartMenu:
         self.player = player
         self.mode = mode
         self.simulation_count = simulation_count
+        self.if_start = True
         self.start()
 
     def check_player(self):
@@ -38,10 +39,14 @@ class RestartMenu:
         self.menu.add.label(txt_for_label, label_id='player', onselect=None)
         self.menu.add.button('Restart', self.restart_game)
         self.menu.add.button('Back to menu', self.go_to_menu)
-        self.menu.mainloop(SURFACE)
+        if self.if_start:
+            self.menu.mainloop(SURFACE)
+        else:
+            self.menu.mainloop(False)
 
     def go_to_menu(self):
-        return 0
+        print("same")
+        self.if_start = False
 
     def restart_game(self):
         start_game(self.mode, self.simulation_count)
