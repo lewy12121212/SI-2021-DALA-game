@@ -69,9 +69,10 @@ class Gui_user:
             time.sleep(0.001)
 
         if self.search(self.middle_fields, self.field):
-            print("prawadoto")
+            #print("prawadoto")
+            pass
         else:
-            print("nieprawdato")
+            #print("nieprawdato")
             return 1
 
         print(self.field[1], ":", self.field[0])

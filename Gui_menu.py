@@ -4,7 +4,8 @@ import main_ai
 import time
 
 
-SURFACE = pygame.display.set_mode((600, 425))
+
+SURFACE = pygame.display.set_mode((900, 425))
 
 def start_game(mode, simulation_count):
 
@@ -36,10 +37,15 @@ class GameMenu:
 
     def init_restart_menu(self):
         self.restart_menu = pygame_menu.Menu(300, 400, 'Wynik', theme=pygame_menu.themes.THEME_GREEN)
-        self.restart_menu.add.label(str(self.winner), label_id="player_winner", onselect=None)
+        self.restart_menu.add.label("Wygrał gracz: " + self.set_player_name(), label_id="player_winner", onselect=None)
         self.restart_menu.add.button('Restart', self.start_the_game)
         self.restart_menu.add.button('Back to menu', self.set_menu)
 
+    def set_player_name(self):
+        if self.winner == 1:
+            return "czarny"
+        else:
+            return "biały"
 
     def start(self) -> None:
         while True:

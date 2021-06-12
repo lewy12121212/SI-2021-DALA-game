@@ -51,7 +51,14 @@ class Board:
 
     #Podaje ilość pionków gracza znajdujących się na planszy
     def Get_players_pawns_on_board(self, id):
-        return self.players[id-1].pawns_on_board
+        #return self.players[id-1].pawns_on_board
+        quantity = 0
+        for j in self.board:
+            for i in j:
+                if i == id:
+                    quantity += 1
+
+        return quantity
 
         # Podaje ilość pionków gracza znajdujących się na planszy
     def Get_players_pawns(self, id):
