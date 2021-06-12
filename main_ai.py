@@ -58,6 +58,7 @@ class Game:
 
     def user_vs_ai(self):
         self.gui_user = Gui_user.Gui_user(self.c_board, 2)
+        self.gameWindow.setBoard(self.c_board, self.next_phase, self.Player)
 
         while True:
             #print("while phase: ", self.next_phase)
@@ -120,6 +121,7 @@ class Game:
         return self.Player
 
     def ai_vs_ai(self):
+        self.gameWindow.setBoard(self.c_board, self.next_phase, self.Player)
 
         while True:
             print("while phase: ", self.next_phase)

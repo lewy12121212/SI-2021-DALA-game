@@ -63,15 +63,10 @@ class Gui:
         #return text, textRect 
 
     def Window_while(self):
-        
         self.win.fill(black)
-        #self.create_text("Ruch:", 470, 50)
-
-        #rysowanie planszy
         self.Draw_board()
         self.Pawn_draw()
         pygame.display.update()
-        #time.sleep(0.1) # odciążenie procesora
 
     def setBoard(self, board, phase, player):
         self.board = board
