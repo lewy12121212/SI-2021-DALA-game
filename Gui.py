@@ -31,8 +31,8 @@ class Gui:
         #inicjowanie biblioteki pyGame
         #pygame.init()
         #font
-        pygame.font.init() # you have to call this at the start, 
-                   # if you want to use this module.
+        pygame.font.init()  # you have to call this at the start, 
+                            # if you want to use this module.
         
 
         self.run = True
@@ -82,10 +82,10 @@ class Gui:
         #self.create_text("Ruch:", 450, 70, white)
 
         print("show get turn: ", self.phase, "turn" , self.player)
-        if self.player == 0:
-            self.create_text("Tura białych", 500, 70, white)
-        else:
+        if self.player == 1:
             self.create_text("Tura czarnych", 500, 70, white)
+        else:
+            self.create_text("Tura białych", 500, 70, white)
 
         if self.phase == 0:
             self.create_text("Faza stawiania", 500, 100, green)

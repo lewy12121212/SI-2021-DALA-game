@@ -38,6 +38,8 @@ class Game:
         else:
             print("type of game problem!")
 
+        return self.Player
+
     def ai_player_move(self):
         print(self.c_board.phase)
         board_state = State(self.c_board, self.Player, self.next_phase)
