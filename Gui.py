@@ -64,6 +64,7 @@ class Gui:
         
         self.win.fill(black)
         self.create_text("Ruch:", 470, 50)
+        print("show get turn: ", self.board.get_turn())
         if self.board.get_turn() == 1:
             self.create_text("Czarne", 550, 50)
         else:

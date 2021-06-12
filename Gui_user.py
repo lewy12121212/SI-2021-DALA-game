@@ -53,10 +53,8 @@ class Gui_user:
         for i in self.middle_fields:
             print(i,": ", self.board.board[i[1]][i[0]])
             if self.board.board[i[1]][i[0]] == 0:
-                print("ojć")
                 return 0
 
-        print("Oj jojoj - coś poszło nie tak :/")
         self.start_normal_game = True
 
     def if_putting_first_four(self):
