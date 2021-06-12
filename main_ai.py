@@ -47,11 +47,11 @@ class Game:
         self.c_state = best_node.state
         self.c_board = self.c_state.board
         self.c_board.Printing_board(self.Player)
-        self.gameWindow.setBoard(self.c_board)
+        #self.gameWindow.setBoard(self.c_board, self.next_phase, self.Player)
 
     def user_player_move(self):
         self.c_board, user_last_x, user_last_y = self.gui_user.user_move(self.c_board, 2, self.next_phase)
-        self.gameWindow.setBoard(self.c_board)
+        #self.gameWindow.setBoard(self.c_board)
         return user_last_x, user_last_y
 
     def user_vs_ai(self):
@@ -112,8 +112,10 @@ class Game:
 
                 if self.c_board.end() == 1 or self.c_board.end() == 2:
                     break
+            self.gameWindow.setBoard(self.c_board, self.next_phase, self.Player)
 
         print("Koniec")
+        return self.Player
 
     def ai_vs_ai(self):
 
@@ -168,8 +170,10 @@ class Game:
 
                 if self.c_state.is_game_over():
                     break
+            self.gameWindow.setBoard(self.c_board, self.next_phase, self.Player)
 
         print("Koniec")
+        return self.Player
 
 
 if __name__ == "__main__":

@@ -22,6 +22,8 @@ white = (255, 255, 255)
 green = (0, 255, 0)
 blue = (0, 0, 128)
 black = (0, 0, 0)
+red = (255, 0, 0)
+yellow = (255, 255, 0)
 
 class Gui:
 
@@ -51,29 +53,19 @@ class Gui:
         #uruchomienie głównej funckcji GUI
         self.Window_while()
 
-    def create_text(self, contents, x, y):
+    def create_text(self, contents, x, y, color):
         #set font
         font = pygame.font.Font('freesansbold.ttf', 20)
-        text = font.render(contents, True, green, black)
+        text = font.render(contents, True, color, black)
         textRect = text.get_rect()
         textRect.center = (x, y)
         self.win.blit(text, textRect)
-        #return text, textRect
+        #return text, textRect 
 
     def Window_while(self):
         
         self.win.fill(black)
-        self.create_text("Ruch:", 470, 50)
-        print("show get turn: ", self.board.get_turn())
-        if self.board.get_turn() == 1:
-            self.create_text("Czarne", 550, 50)
-        else:
-            self.create_text("Białe", 550, 50)
-
-
-        #set windows option
-        
-        #self.win.blit(text, textRect)
+        #self.create_text("Ruch:", 470, 50)
 
         #rysowanie planszy
         self.Draw_board()
@@ -81,12 +73,31 @@ class Gui:
         pygame.display.update()
         #time.sleep(0.1) # odciążenie procesora
 
-    def setBoard(self, board):
+    def setBoard(self, board, phase, player):
         self.board = board
+        self.phase = phase
+        self.player = player
+        ###
+        self.win.fill(black)
+        #self.create_text("Ruch:", 450, 70, white)
+
+        print("show get turn: ", self.phase, "turn" , self.player)
+        if self.player == 0:
+            self.create_text("Tura białych", 500, 70, white)
+        else:
+            self.create_text("Tura czarnych", 500, 70, white)
+
+        if self.phase == 0:
+            self.create_text("Faza stawiania", 500, 100, green)
+        elif self.phase == 1:
+            self.create_text("Faza ruchu", 500, 100, yellow)
+        else:
+            self.create_text("Faza zbijania", 500, 100, red)
+        ###
         self.Draw_board()
         self.Pawn_draw()
         pygame.display.update()
-
+ 
 
     def Create_table_of_position(self):
 
