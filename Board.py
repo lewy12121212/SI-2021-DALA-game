@@ -202,5 +202,8 @@ class Board:
             self.turn = 2
         else:
             self.turn = 1
+
+    def get_turn(self):
+        return self.turn
             
     

@@ -18,11 +18,21 @@ SIDE_SIZE = 50 #długość boku pola
 
 OLD_XY = [0, 0]
 
+white = (255, 255, 255)
+green = (0, 255, 0)
+blue = (0, 0, 128)
+black = (0, 0, 0)
+
 class Gui:
 
     def __init__(self, board, window):
         #inicjowanie biblioteki pyGame
         #pygame.init()
+        #font
+        pygame.font.init() # you have to call this at the start, 
+                   # if you want to use this module.
+        
+
         self.run = True
         #inicjowanie zmiennych pomocniczych
         self.If_three = False
@@ -41,19 +51,32 @@ class Gui:
         #uruchomienie głównej funckcji GUI
         self.Window_while()
 
+    def create_text(self, contents, x, y):
+        #set font
+        font = pygame.font.Font('freesansbold.ttf', 20)
+        text = font.render(contents, True, green, black)
+        textRect = text.get_rect()
+        textRect.center = (x, y)
+        self.win.blit(text, textRect)
+        #return text, textRect
+
     def Window_while(self):
         
-        #pętla główna okna gry
-        #while True: 
+        self.win.fill(black)
+        self.create_text("Ruch:", 470, 50)
+        if self.board.get_turn() == 1:
+            self.create_text("Czarne", 550, 50)
+        else:
+            self.create_text("Białe", 550, 50)
+
+
+        #set windows option
+        
+        #self.win.blit(text, textRect)
+
+        #rysowanie planszy
         self.Draw_board()
         self.Pawn_draw()
-        #obsługa zdarzeń
-        #for event in pygame.event.get():
-        #    if event.type == pygame.QUIT:
-        #        self.run = False
-        #    elif event.type == pygame.MOUSEBUTTONUP:
-        #        self.Click_operation()
-        #rysowanie planszy
         pygame.display.update()
         #time.sleep(0.1) # odciążenie procesora
 
