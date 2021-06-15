@@ -15,6 +15,7 @@ def init():
     return c_state, c_board
 
 class Game:
+
     def __init__(self, type_of_game, count_of_simulation, window) -> None:
         self.Player = 2;
         self.c_state, self.c_board = init()

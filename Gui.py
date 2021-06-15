@@ -50,7 +50,7 @@ class Gui:
         self.win = window
         self.win.fill((0,0,0))
         # wyświetlanie okna gry
-        pygame.display.set_caption("Moja Gra")
+        pygame.display.set_caption("Dala game")
         #tworzenie tablicy pozycji
         self.Create_table_of_position()
         #uruchomienie głównej funckcji GUI
@@ -87,27 +87,27 @@ class Gui:
 
         print("show get turn: ", self.phase, "turn" , self.player)
         if self.player == 1:
-            self.create_text("Tura czarnych", X_COL1, 70, white)
+            self.create_text("Black turn", X_COL1, 70, white)
         else:
-            self.create_text("Tura białych", X_COL1, 70, white)
+            self.create_text("White turn", X_COL1, 70, white)
 
         if self.phase == 0:
-            self.create_text("Faza stawiania", X_COL1, 100, green)
+            self.create_text("Putting phase", X_COL1, 100, green)
         elif self.phase == 1:
-            self.create_text("Faza ruchu", X_COL1, 100, yellow)
+            self.create_text("Moving phase", X_COL1, 100, yellow)
         else:
-            self.create_text("Faza zbijania", X_COL1, 100, red)
+            self.create_text("Take off", X_COL1, 100, red)
         ###
-        self.create_text("Pionki czarne: ", X_COL1, 130, green)
+        self.create_text("Black pawns: ", X_COL1, 130, green)
         self.create_text(str(self.all_paws_black), X_COL2, 130, white)
 
-        self.create_text("Pionki białe: ", X_COL1, 160, green)
+        self.create_text("White pawns: ", X_COL1, 160, green)
         self.create_text(str(self.all_paws_white), X_COL2, 160, white)
 
-        self.create_text("Czarne pionki na planszy: ", X_COL1, 190, yellow)
+        self.create_text("Black pawns on board: ", X_COL1, 190, yellow)
         self.create_text(str(self.paws_on_board_black), X_COL2, 190, white)
 
-        self.create_text("Białe pionki na planszy: ", X_COL1, 220, yellow)
+        self.create_text("White pawns on board: ", X_COL1, 220, yellow)
         self.create_text(str(self.paws_on_board_white), X_COL2, 220, white)
 
         ###

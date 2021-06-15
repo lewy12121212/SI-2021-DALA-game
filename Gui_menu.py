@@ -30,22 +30,22 @@ class GameMenu:
 
     def init_main_menu(self):
         self.main_menu = pygame_menu.Menu(300, 400, 'Menu', theme=pygame_menu.themes.THEME_GREEN)
-        self.main_menu.add.text_input('Symulacje :', default=100, onchange=self.set_count)
-        self.main_menu.add.selector('Tryb :', [('AI vs AI', 0), ('User vs AI', 1)], onchange=self.set_game_mode)
+        self.main_menu.add.text_input('Simulation :', default=100, onchange=self.set_count)
+        self.main_menu.add.selector('Mode :', [('AI vs AI', 0), ('User vs AI', 1)], onchange=self.set_game_mode)
         self.main_menu.add.button('Play', self.start_the_game)
         self.main_menu.add.button('Quit', pygame_menu.events.EXIT)
 
     def init_restart_menu(self):
-        self.restart_menu = pygame_menu.Menu(300, 400, 'Wynik', theme=pygame_menu.themes.THEME_GREEN)
-        self.restart_menu.add.label("Wygrał gracz: " + self.set_player_name(), label_id="player_winner", onselect=None)
-        self.restart_menu.add.button('Restart', self.start_the_game)
+        self.restart_menu = pygame_menu.Menu(300, 400, 'Score', theme=pygame_menu.themes.THEME_GREEN)
+        self.restart_menu.add.label("Winner: " + self.set_player_name(), label_id="player_winner", onselect=None)
+        self.restart_menu.add.button('Restart game', self.start_the_game)
         self.restart_menu.add.button('Back to menu', self.set_menu)
 
     def set_player_name(self):
         if self.winner == 1:
-            return "czarny"
+            return "black"
         else:
-            return "biały"
+            return "white"
 
     def start(self) -> None:
         while True:
