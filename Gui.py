@@ -18,47 +18,103 @@ SIDE_SIZE = 50 #długość boku pola
 
 OLD_XY = [0, 0]
 
+white = (255, 255, 255)
+green = (0, 255, 0)
+blue = (0, 0, 128)
+black = (0, 0, 0)
+red = (255, 0, 0)
+yellow = (255, 255, 0)
+
+X_COL1 = 610
+X_COL2 = 780
+
 class Gui:
-    
-    
-    def __init__(self, board):
+
+    def __init__(self, board, window):
         #inicjowanie biblioteki pyGame
-        pygame.init()
-        self.run = True
+        #pygame.init()
+        #font
+        pygame.font.init()  # you have to call this at the start, 
+                            # if you want to use this module.
         
+
+        self.run = True
         #inicjowanie zmiennych pomocniczych
         self.If_three = False
         self.If_move = False
-        
         #inijowanie tablicy
         self.board = board
-        self.board.Printing_board()
+        #self.board.Printing_board()
         # definiowanie okna gry
-        self.win = pygame.display.set_mode((425, 425))
+        #self.win = pygame.display.set_mode((425, 425))
+        self.win = window
+        self.win.fill((0,0,0))
         # wyświetlanie okna gry
-        pygame.display.set_caption("Moja Gra")
+        pygame.display.set_caption("Dala game")
         #tworzenie tablicy pozycji
         self.Create_table_of_position()
         #uruchomienie głównej funckcji GUI
         self.Window_while()
 
+    def create_text(self, contents, x, y, color):
+        #set font
+        font = pygame.font.Font('freesansbold.ttf', 20)
+        text = font.render(contents, True, color, black)
+        textRect = text.get_rect()
+        textRect.center = (x, y)
+        self.win.blit(text, textRect)
+        #return text, textRect 
+
     def Window_while(self):
-       
-        #pętla główna okna gry
-        while self.run: 
-            self.Draw_board()
-            self.Pawn_draw()
+        self.win.fill(black)
+        self.Draw_board()
+        self.Pawn_draw()
+        pygame.display.update()
 
-            #obsługa zdarzeń
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.run = False
-                elif event.type == pygame.MOUSEBUTTONUP:
-                    self.Click_operation()
+    def setBoard(self, board, phase, player):
+        self.board = board
+        self.phase = phase
+        self.player = player
+        ###
+        self.all_paws_black = self.board.Get_players_pawns(1)
+        self.all_paws_white = self.board.Get_players_pawns(2)
+        ###
+        self.paws_on_board_black = self.board.Get_players_pawns_on_board(1)
+        self.paws_on_board_white = self.board.Get_players_pawns_on_board(2)
+        ###
+        self.win.fill(black)
+        #self.create_text("Ruch:", 450, 70, white)
 
-            #rysowanie planszy
-            pygame.display.update()
-            time.sleep(0.01) # odciążenie procesora
+        print("show get turn: ", self.phase, "turn" , self.player)
+        if self.player == 1:
+            self.create_text("Black turn", X_COL1, 70, white)
+        else:
+            self.create_text("White turn", X_COL1, 70, white)
+
+        if self.phase == 0:
+            self.create_text("Putting phase", X_COL1, 100, green)
+        elif self.phase == 1:
+            self.create_text("Moving phase", X_COL1, 100, yellow)
+        else:
+            self.create_text("Take off", X_COL1, 100, red)
+        ###
+        self.create_text("Black pawns: ", X_COL1, 130, green)
+        self.create_text(str(self.all_paws_black), X_COL2, 130, white)
+
+        self.create_text("White pawns: ", X_COL1, 160, green)
+        self.create_text(str(self.all_paws_white), X_COL2, 160, white)
+
+        self.create_text("Black pawns on board: ", X_COL1, 190, yellow)
+        self.create_text(str(self.paws_on_board_black), X_COL2, 190, white)
+
+        self.create_text("White pawns on board: ", X_COL1, 220, yellow)
+        self.create_text(str(self.paws_on_board_white), X_COL2, 220, white)
+
+        ###
+        self.Draw_board()
+        self.Pawn_draw()
+        pygame.display.update()
+ 
 
     def Create_table_of_position(self):
 
@@ -67,7 +123,7 @@ class Gui:
             end_pos = X_POS + SIDE_SIZE + (i * (SIDE_SIZE + LINE_SIZE))
             TABLE_OF_POSITION.append([start_pos, end_pos])
 
-        print("TABLE OF POSITION", TABLE_OF_POSITION)
+        #print("TABLE OF POSITION", TABLE_OF_POSITION)
 
     def Draw_board(self):
         x = X_POS
@@ -97,131 +153,4 @@ class Gui:
                 x = x + SIDE_SIZE + LINE_SIZE
             y = y + SIDE_SIZE + LINE_SIZE
             x = X_POS
-
-    #Sparawdzanie czy można zakończyć rozgrywkę
-    def If_end(self):
-        print("GRACZ 1: ",self.board.Get_players_pawns(1))
-        print("GRACZ 2: ",self.board.Get_players_pawns(2))
-        if self.board.Get_players_pawns(1)<3:
-            return True
-        elif self.board.Get_players_pawns(2)<3:
-            return True
-        else:
-            return False
-
-    def Click_operation(self):
-
-        #sprwdzenie czy usuwamy pionek
-        if self.If_three:
-            print("Faktycznie trójka :D")
-            if self.board.Take_off_pawn(self.Mouse_check()):
-                if self.If_end():
-                    self.run = False #Koniec gry
-                self.board.Split_turn()
-                self.If_three = False
-
-        elif self.board.Get_players_placed_pawns(1)!=NUMBER_OF_PAWNS or self.board.Get_players_placed_pawns(2)!=NUMBER_OF_PAWNS:
-            print("putting")
-            self.Pawn_set(self.Mouse_check())
-
-        elif self.board.Get_players_placed_pawns(1) == NUMBER_OF_PAWNS or self.board.Get_players_placed_pawns(2) == NUMBER_OF_PAWNS:
-            print("sliding")
-            self.Pawn_move(self.Mouse_check())
-        else:
-            #self.run = False
-            print("END GAME")
-
-        self.board.Printing_board()
-
-    def Set_If_three(self, field):
-        if self.board.If_three_pawns(field[1], field[0]): #sprawdzamy czy trójka
-            self.If_three = True
-            self.board.Split_turn()
-            print("TRÓJKA! - wskaż pionek do usunięcia")
-        else:
-            self.If_three = False
-        
-        print(self.If_three)
-
-    #stawianie pionków 0
-    def Pawn_set(self, field):
-        print("pawn set")
-        print(field)
-        print("putting")
-        if Putting(self.board, field[0], field[1]):
-            self.Set_If_three(field)
-
-        self.board.Printing_board()
-
-    #przesuwanie pionków 2
-    def Pawn_move(self, field):
-        print("pawn set")
-        print(field)
-        print("sliding")
-
-        if self.If_move == False:
-            print(":) Move False")
-            #obsługa wybierania pionka do przesunięcia
-            if Sliding(self.board, field[0], field[1]): #jeśli można przesunąć pionek
-                OLD_XY[0] = field[0] #zapamiętanie współrzędnych
-                OLD_XY[1] = field[1]
-                self.If_move = True #ustawienie, że gracz jest w czasie ruchu
-            return
-        elif self.If_move == True:   
-            print(":) Move True")
-            #obsługa wybiarania miejsca do przesunięcia //stawianie pionka
-            if self.board.Move_pawn(OLD_XY[1], OLD_XY[0], field[1], field[0]):
-                print(":) Move DONE")
-                self.Set_If_three(field)
-                self.If_move = False 
-            return
-
-    #obsługa zdarzeń myszy
-    def X_mouse_check(self, mouse_pos):
-        field_x = 0
-        #X
-        if mouse_pos[0] >= TABLE_OF_POSITION[0][0] and mouse_pos[0] <= TABLE_OF_POSITION[0][1]: #Y
-            field_x = 0
-        elif mouse_pos[0] >= TABLE_OF_POSITION[1][0] and mouse_pos[0] <= TABLE_OF_POSITION[1][1]:
-            field_x = 1
-        elif mouse_pos[0] >= TABLE_OF_POSITION[2][0] and mouse_pos[0] <= TABLE_OF_POSITION[2][1]:
-            field_x = 2
-        elif mouse_pos[0] >= TABLE_OF_POSITION[3][0] and mouse_pos[0] <= TABLE_OF_POSITION[3][1]:
-            field_x = 3
-        elif mouse_pos[0] >= TABLE_OF_POSITION[4][0] and mouse_pos[0] <= TABLE_OF_POSITION[4][1]:
-            field_x = 4
-        elif mouse_pos[0] >= TABLE_OF_POSITION[5][0] and mouse_pos[0] <= TABLE_OF_POSITION[5][1]:
-            field_x = 5
-
-        return field_x
-
-    def Y_mouse_check(self, mouse_pos):
-        field_y = 0
-        #Y
-        if mouse_pos[1] >= TABLE_OF_POSITION[0][0] and mouse_pos[1] <= TABLE_OF_POSITION[0][1]: #Y
-            field_y = 0
-        elif mouse_pos[1] >= TABLE_OF_POSITION[1][0] and mouse_pos[1] <= TABLE_OF_POSITION[1][1]:
-            field_y = 1
-        elif mouse_pos[1] >= TABLE_OF_POSITION[2][0] and mouse_pos[1] <= TABLE_OF_POSITION[2][1]:
-            field_y = 2
-        elif mouse_pos[1] >= TABLE_OF_POSITION[3][0] and mouse_pos[1] <= TABLE_OF_POSITION[3][1]:
-            field_y = 3
-        elif mouse_pos[1] >= TABLE_OF_POSITION[4][0] and mouse_pos[1] <= TABLE_OF_POSITION[4][1]:
-            field_y = 4
-        elif mouse_pos[1] >= TABLE_OF_POSITION[5][0] and mouse_pos[1] <= TABLE_OF_POSITION[5][1]:
-            field_y = 5
-
-        return field_y
-
-    def Mouse_check(self):
-
-        mouse_pos = pygame.mouse.get_pos()
-        #print(mouse_pos[0], " ", mouse_pos[1])
-        field_x = self.X_mouse_check(mouse_pos)
-        field_y = self.Y_mouse_check(mouse_pos)
-        field = [field_x, field_y]
-        #print(field)
-        return field
-
-
 #Gui()
